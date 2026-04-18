@@ -9,17 +9,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldDescription, FieldError,  FieldLabel } from "@/components/ui/field"
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { addTask } from "@/redux/features/task/taskSlice"
+import { useAppDispatch } from "@/redux/hook"
 // import { Label } from "@/components/ui/label"
 import { useForm, Controller } from "react-hook-form"
 
 export function AddTaskModal() {
   const form = useForm();
-  console.log(form);
+  const dispatch = useAppDispatch()
+  const onSubmit = (data) => {
+    dispatch(addTask(data))
+  }
   return (
     <Dialog>
-      <form>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <DialogTrigger asChild>
           <Button >+ Add new task</Button>
         </DialogTrigger>
@@ -28,9 +33,9 @@ export function AddTaskModal() {
             <DialogTitle>Add task</DialogTitle>
           </DialogHeader>
           {/* ============================================================================ */}
-          <Controller
-            name="title"
-            control={form.control}
+          <Controller 
+          name="title" 
+          control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name}>Task name</FieldLabel>
