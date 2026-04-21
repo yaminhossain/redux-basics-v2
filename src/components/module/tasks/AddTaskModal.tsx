@@ -13,14 +13,15 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui
 import { Input } from "@/components/ui/input"
 import { addTask } from "@/redux/features/task/taskSlice"
 import { useAppDispatch } from "@/redux/hook"
-// import { Label } from "@/components/ui/label"
-import { useForm, Controller } from "react-hook-form"
+import type { ITask } from "@/types"
+
+import { useForm, Controller, type SubmitHandler, type FieldValues } from "react-hook-form"
 
 export function AddTaskModal() {
   const form = useForm();
   const dispatch = useAppDispatch()
-  const onSubmit = (data) => {
-    dispatch(addTask(data))
+  const onSubmit: SubmitHandler<FieldValues>  = (data) => {
+    dispatch(addTask(data as ITask))
   }
   return (
     <Dialog>
