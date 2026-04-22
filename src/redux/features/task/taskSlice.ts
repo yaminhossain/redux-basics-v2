@@ -34,26 +34,46 @@ const taskSlice = createSlice({
     // isCompleted will be true if user clicked on the checkbox. Task id will be received as payload from reducer
     toggleCompleteState: (state, action: PayloadAction<string>) => {
       console.log(action);
-      state.tasks.forEach(task => task.id === action.payload ?
-        task.isCompleted = !task.isCompleted : task)
+      state.tasks.forEach((task) =>
+        task.id === action.payload
+          ? (task.isCompleted = !task.isCompleted)
+          : task,
+      );
     },
 
     //grave individual task by its id and delete it.
     deleteTask: (state, action: PayloadAction<string>) => {
       console.log(action);
-      state.tasks = state.tasks.filter((task) => task.id !== action.payload)
-    }
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+    },
 
+    //update filter
+    updateFilter: (
+      state,
+      action: PayloadAction<"all" | "high" | "medium" | "low">,
+    ) => {
+      state.filter = action.payload;
+    },
   },
 });
 
 export const selectTasks = (state: RootState) => {
-  return state.todo.tasks;
+  const filter = state.todo.filter;
+  if (filter === "low") {
+    return state.todo.tasks.filter((task) => task.priority === "low");
+  } else if (filter === "medium") {
+    return state.todo.tasks.filter((task) => task.priority === "medium");
+  } else if (filter === "high") {
+    return state.todo.tasks.filter((task) => task.priority === "high");
+  } else {
+    return state.todo.tasks;
+  }
 };
 
 export const selectFilter = (state: RootState) => {
   return state.todo.filter;
 };
 
-export const { addTask, toggleCompleteState, deleteTask } = taskSlice.actions;
+export const { addTask, toggleCompleteState, deleteTask, updateFilter } =
+  taskSlice.actions;
 export default taskSlice.reducer;
