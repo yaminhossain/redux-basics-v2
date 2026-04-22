@@ -1,32 +1,47 @@
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import type { ITask } from "@/types"
-import { Trash2 } from "lucide-react"
+import {
+  deleteTask,
+  toggleCompleteState,
+} from "@/redux/features/task/taskSlice";
+import { useAppDispatch } from "@/redux/hook";
+import type { ITask } from "@/types";
+import { Trash2 } from "lucide-react";
 
 interface IProps {
   task: ITask;
 }
 
 function TaskCard({ task }: IProps) {
-  return <div className="border rounded-md p-4 mb-4">
-    <div className="flex justify-between">
-      <div className="flex gap-2 items-center">
-        <div className={cn("bg-green-400 size-3 rounded-full", {
-          "bg-green-500": task.priority === "low",
-          "bg-yellow-500": task.priority === "medium",
-          "bg-red-500": task.priority === "high",
-        })}></div>
-        <p>{task.title}</p>
+  const dispatch = useAppDispatch();
+  return (
+    <div className="border rounded-md p-4 mb-4">
+      <div className="flex justify-between">
+        <div className="flex gap-2 items-center">
+          <div
+            className={cn("bg-green-400 size-3 rounded-full", {
+              "bg-green-500": task.priority === "low",
+              "bg-yellow-500": task.priority === "medium",
+              "bg-red-500": task.priority === "high",
+            })}
+          ></div>
+          <p>{task.title}</p>
+        </div>
+        <div className="flex justify-between items-center gap-2">
+          <Button
+            variant={"link"}
+            className="p-0 text-red-500"
+            onClick={() => dispatch(deleteTask(task.id))}
+          >
+            <Trash2 />
+          </Button>
+          <Checkbox onClick={() => dispatch(toggleCompleteState(task.id))} />
+        </div>
       </div>
-      <div className="flex justify-between items-center gap-2">
-        <Button variant={"link"} className="p-0 text-red-500"><Trash2 /></Button>
-        <Checkbox />
-      </div>
+      <p>{task.description}</p>
     </div>
-    <p>{task.description}</p>
-  </div>
-
+  );
 }
 
-export default TaskCard
+export default TaskCard;
