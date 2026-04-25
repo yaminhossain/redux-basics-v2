@@ -1,5 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
-import counterReducer from './features/counter/couterSlice';
+import counterReducer from './features/counter/counterSlice';
+import userReducer from './features/user/userSlice';
+
 // import logger from "./middlewares/logger";
 import taskReducer from "./features/task/taskSlice"
 

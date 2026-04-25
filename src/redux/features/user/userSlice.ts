@@ -1,6 +1,6 @@
-import type { RootState } from "@/redux/store";
 import { createSlice, type PayloadAction, nanoid } from "@reduxjs/toolkit";
-import { IUser } from "@/types";
+import type { RootState } from "@/redux/store";
+import type { IUser } from "@/types";
 
 interface InitialState {
   users: IUser[];
@@ -33,6 +33,6 @@ const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: RootState) => state.user.users;
+export const selectUsers = (state: RootState) => state.user.users;
 export const { addUser, removeUser } = userSlice.actions;
 export default userSlice.reducer;
